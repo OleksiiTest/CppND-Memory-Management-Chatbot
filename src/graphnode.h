@@ -45,13 +45,13 @@ public:
     // proprietary functions
     void AddToken(std::string token); // add answers to list
     void AddEdgeToParentNode(GraphEdge *edge);
-    void AddEdgeToChildNode(std::unique_ptr<GraphEdge>&& edge);
+    void AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge);
 
     //// STUDENT CODE
     ////
 
-    //pass ChatBot by rvalue-reference in order not to have unnecessary copy. If to make (ChatBot chatbot) move constructor and then desctructor will be called
-    void MoveChatbotHere(ChatBot&& chatbot); 
+    //if to pass ChatBot by rvalue-reference in order not to have unnecessary copy. If to make (ChatBot chatbot) move constructor and then desctructor will be called
+    void MoveChatbotHere(ChatBot chatbot); 
 
     ////
     //// EOF STUDENT CODE
