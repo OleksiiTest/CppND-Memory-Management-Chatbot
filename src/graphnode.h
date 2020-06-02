@@ -20,8 +20,7 @@ private:
     std::vector<std::unique_ptr<GraphEdge>> _childEdges;  // edges to subsequent nodes
 
     // data handles (not owned)
-    std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes 
-    ChatBot *_chatBot;
+    std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes     
 
     ////
     //// EOF STUDENT CODE
@@ -29,6 +28,7 @@ private:
     // proprietary members
     int _id;
     std::vector<std::string> _answers;
+    ChatBot _chatBot;
 
 public:
     // constructor / destructor
@@ -50,7 +50,8 @@ public:
     //// STUDENT CODE
     ////
 
-    void MoveChatbotHere(ChatBot *chatbot);
+    //pass ChatBot by rvalue-reference in order not to have unnecessary copy. If to make (ChatBot chatbot) move constructor and then desctructor will be called
+    void MoveChatbotHere(ChatBot&& chatbot); 
 
     ////
     //// EOF STUDENT CODE

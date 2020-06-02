@@ -62,7 +62,7 @@ ChatBot::ChatBot(ChatBot&& source) noexcept
 
 ChatBot& ChatBot::operator=(const ChatBot & source)
 {
-    std::cout << "ChatBot Copy operator" << std::endl;
+    std::cout << "ChatBot Copy operator=" << std::endl;
     if (&source == this)
         return *this;
     if (source._image)
@@ -76,7 +76,7 @@ ChatBot& ChatBot::operator=(const ChatBot & source)
 
 ChatBot& ChatBot::operator=(ChatBot && source) noexcept
 {
-    std::cout << "ChatBot Move operator" << std::endl;
+    std::cout << "ChatBot Move operator=" << std::endl;
     if (&source == this)
         return *this;
     _image = std::move(source._image);
