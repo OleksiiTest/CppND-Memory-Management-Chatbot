@@ -11,23 +11,16 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
-    // invalidate data handles
-    _image = nullptr;
-    _chatLogic = nullptr;
-    _rootNode = nullptr;
+
 }
 
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
     std::cout << "ChatBot Constructor" << std::endl;
-    
-    // invalidate data handles
-    _chatLogic = nullptr;
-    _rootNode = nullptr;
 
     // load image into heap memory
-    _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
+    _image = std::make_unique<wxBitmap>(filename, wxBITMAP_TYPE_PNG);
 }
 
 ChatBot::~ChatBot()
@@ -35,16 +28,68 @@ ChatBot::~ChatBot()
     std::cout << "ChatBot Destructor" << std::endl;
 
     // deallocate heap memory
-    if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
+    /*if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
         delete _image;
         _image = NULL;
-    }
+    }*/
 }
 
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot& source)
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+    if (source._image)
+        _image = std::make_unique<wxBitmap>(*source._image);
+    _currentNode = source._currentNode;
+    _rootNode= source._rootNode;
+    _chatLogic = source._chatLogic;
+}
 
+ChatBot::ChatBot(ChatBot&& source) noexcept
+{
+    std::cout << "ChatBot Move Constructor" << std::endl;
+    _image = std::move(source._image);
+    _currentNode = source._currentNode;
+    _rootNode= source._rootNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
+}
+
+ChatBot& ChatBot::operator=(const ChatBot & source)
+{
+    std::cout << "ChatBot Copy operator" << std::endl;
+    if (&source == this)
+        return *this;
+    if (source._image)
+        _image = std::make_unique<wxBitmap>(*source._image);
+    _currentNode = source._currentNode;
+    _rootNode= source._rootNode;
+    _chatLogic = source._chatLogic;
+    
+    return *this;
+}
+
+ChatBot& ChatBot::operator=(ChatBot && source) noexcept
+{
+    std::cout << "ChatBot Move operator" << std::endl;
+    if (&source == this)
+        return *this;
+    _image = std::move(source._image);
+    _currentNode = source._currentNode;
+    _rootNode= source._rootNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
+
+    return *this;
+}
 ////
 //// EOF STUDENT CODE
 

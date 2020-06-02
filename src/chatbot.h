@@ -3,6 +3,7 @@
 
 #include <wx/bitmap.h>
 #include <string>
+#include <memory>
 
 class GraphNode; // forward declaration
 class ChatLogic; // forward declaration
@@ -11,12 +12,12 @@ class ChatBot
 {
 private:
     // data handles (owned)
-    wxBitmap *_image; // avatar image
+    std::unique_ptr<wxBitmap> _image; // avatar image
 
     // data handles (not owned)
-    GraphNode *_currentNode;
-    GraphNode *_rootNode;
-    ChatLogic *_chatLogic;
+    GraphNode *_currentNode{nullptr};
+    GraphNode *_rootNode{nullptr};
+    ChatLogic *_chatLogic{nullptr};
 
     // proprietary functions
     int ComputeLevenshteinDistance(std::string s1, std::string s2);
@@ -29,7 +30,10 @@ public:
 
     //// STUDENT CODE
     ////
-
+    ChatBot(const ChatBot& source);
+    ChatBot(ChatBot&& source) noexcept;
+    ChatBot& operator=(const ChatBot & source);
+    ChatBot& operator=(ChatBot && source) noexcept;
     ////
     //// EOF STUDENT CODE
 
@@ -37,7 +41,7 @@ public:
     void SetCurrentNode(GraphNode *node);
     void SetRootNode(GraphNode *rootNode) { _rootNode = rootNode; }
     void SetChatLogicHandle(ChatLogic *chatLogic) { _chatLogic = chatLogic; }
-    wxBitmap *GetImageHandle() { return _image; }
+    wxBitmap *GetImageHandle() { return _image.get(); }
 
     // communication
     void ReceiveMessageFromUser(std::string message);
